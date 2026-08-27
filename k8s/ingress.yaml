@@ -1,30 +1,17 @@
-# Redirects plain HTTP to HTTPS; referenced by the Ingress annotation below.
-apiVersion: traefik.io/v1alpha1
-kind: Middleware
-metadata:
-  name: redirect-https
-  namespace: kavali
-spec:
-  redirectScheme:
-    scheme: https
-    permanent: true
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: frontend
+  name: kavali-ingress
   namespace: kavali
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    traefik.ingress.kubernetes.io/router.middlewares: kavali-redirect-https@kubernetescrd
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    # The websecure entrypoint's default cert covers chivtar.dev only, so this
+    # router asks the letsencrypt resolver for its own kava.li certificate.
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.certresolver: letsencrypt
+    traefik.ingress.kubernetes.io/router.tls.domains.0.main: kava.li
+    traefik.ingress.kubernetes.io/router.tls.domains.0.sans: www.kava.li
 spec:
   ingressClassName: traefik
-  tls:
-    - hosts:
-        - kava.li
-        - www.kava.li
-      secretName: kavali-tls
   rules:
     - host: kava.li
       http:
@@ -35,7 +22,7 @@ spec:
               service:
                 name: frontend
                 port:
-                  name: http
+                  number: 80
     - host: www.kava.li
       http:
         paths:
@@ -45,4 +32,4 @@ spec:
               service:
                 name: frontend
                 port:
-                  name: http
+                  number: 80

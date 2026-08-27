@@ -3,8 +3,11 @@ kind: Deployment
 metadata:
   name: frontend
   namespace: kavali
+  labels:
+    app: frontend
 spec:
-  replicas: 2
+  replicas: 1
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app: frontend
@@ -20,8 +23,8 @@ spec:
           type: RuntimeDefault
       containers:
         - name: frontend
-          # CD rewrites this tag to the full commit SHA.
-          image: ghcr.io/chivta/kavali-frontend:latest
+          # CD rewrites this tag via the images block in kustomization.yaml.
+          image: ghcr.io/chivta/kava.li/frontend:placeholder
           ports:
             - name: http
               containerPort: 8080
@@ -30,7 +33,7 @@ spec:
             readOnlyRootFilesystem: true
             capabilities:
               drop: ["ALL"]
-          # nginx writes its pid and temp files under /tmp (see nginx.conf).
+          # nginx writes its pid, cache and temp files under /tmp (see nginx.conf).
           volumeMounts:
             - name: tmp
               mountPath: /tmp
@@ -49,7 +52,10 @@ spec:
               cpu: 10m
               memory: 16Mi
             limits:
+              cpu: 100m
               memory: 64Mi
+      imagePullSecrets:
+        - name: ghcr-secret
       volumes:
         - name: tmp
           emptyDir: {}
