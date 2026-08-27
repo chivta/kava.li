@@ -21,7 +21,7 @@ spec:
       containers:
         - name: frontend
           # CD rewrites this tag to the full commit SHA.
-          image: ghcr.io/arvlas/kavali-frontend:latest
+          image: ghcr.io/chivta/kavali-frontend:latest
           ports:
             - name: http
               containerPort: 8080
