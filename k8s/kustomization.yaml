@@ -9,4 +9,4 @@ resources:
 images:
 - name: ghcr.io/chivta/kava.li/frontend
   newName: ghcr.io/chivta/kava.li/frontend
-  newTag: placeholder
+  newTag: 612b6ad565a965be562e1c28cadd3ff7658d3636
