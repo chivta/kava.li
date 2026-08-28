@@ -37,15 +37,8 @@ Flux reconciles `k8s/` straight from this repo — the wiring lives in
 [chivta/homelab](https://github.com/chivta/homelab) under `clusters/main/apps/kavali/`. Nothing is
 applied imperatively; the `deploy:` commit is what triggers a rollout.
 
-The image is pulled with the `ghcr-secret` credentials shared with ruscan. Copy them into this
-repo once, encrypted to the same age recipient:
-
-```
-./scripts/sync-ghcr-secret.sh
-```
-
-That writes `k8s/secrets.enc.yaml` and registers it in `k8s/kustomization.yaml`. The plaintext
-`k8s/secrets.yaml` is gitignored and deleted by the script.
+The `ghcr.io/chivta/kava.li/frontend` package is public, so the cluster pulls it anonymously and
+no pull secret is needed.
 
 The cluster serves this behind Traefik, which requests the `kava.li` certificate from its
 `letsencrypt` resolver over the Cloudflare DNS-01 challenge. Point the `kava.li` and `www.kava.li`
