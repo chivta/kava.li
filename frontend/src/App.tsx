@@ -18,13 +18,14 @@ export default function App() {
 
 const styles: Record<string, React.CSSProperties> = {
   main: {
-    minHeight: '100dvh',
+    height: '100dvh',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     gap: '1.5rem',
     padding: '2rem',
+    boxSizing: 'border-box',
     fontFamily: 'system-ui, sans-serif',
     textAlign: 'center',
   },
@@ -35,8 +36,11 @@ const styles: Record<string, React.CSSProperties> = {
     letterSpacing: '0.02em',
   },
   gif: {
+    // Bounded on both axes so the page never needs to scroll.
     maxWidth: 'min(100%, 480px)',
+    maxHeight: '60dvh',
     height: 'auto',
+    objectFit: 'contain',
   },
   footer: {
     fontSize: '0.9rem',
