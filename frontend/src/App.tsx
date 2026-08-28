@@ -39,8 +39,6 @@ const styles: Record<string, React.CSSProperties> = {
     height: 'auto',
   },
   footer: {
-    marginTop: 'auto',
-    paddingTop: '2rem',
     fontSize: '0.9rem',
     opacity: 0.7,
   },
